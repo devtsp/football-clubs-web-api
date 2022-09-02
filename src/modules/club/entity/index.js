@@ -1,5 +1,5 @@
 const buildMakeClub = require('./Club');
-const Id = require('../../id/Id');
+const Id = require('../../helpers/generate-id');
 
 const makeClub = buildMakeClub({ Id });
 
