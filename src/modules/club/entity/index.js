@@ -1,5 +1,6 @@
-const buildMakeClub = require('./club');
+const buildMakeClub = require('./Club');
+const Id = require('../../id/Id');
 
-const makeClub = buildMakeClub();
+const makeClub = buildMakeClub({ Id });
 
 module.exports = makeClub;

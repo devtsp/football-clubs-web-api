@@ -1,45 +1,51 @@
 const makeClub = require('./index');
 
-const makeFakeClub = propToModify => {
-	const modifiedClub = {
-		clubId: 1,
-		clubName: 'valid',
-		clubTLA: 'TLA',
-		clubCrestURL: 'http://crest.com/1',
-		createdAt: 12321321,
-		updatedAt: 1231231123,
-		...propToModify,
-	};
-	return modifiedClub;
+const fakeFields = {
+	clubName: 'valid',
+	clubTLA: 'TLA',
+	clubCrestURL: 'http://crest.com/1',
 };
 
 describe('Club', () => {
-	test('must have an Id', () => {
-		const club = makeFakeClub({ clubId: null });
-		expect(() => makeClub(club)).toThrow('Club must have an Id');
+	test('Autogenerates an Id', () => {
+		expect(() => makeClub(fakeFields).getId()).toBeDefined();
 	});
-	test('must have an name', () => {
-		const club = makeFakeClub({ clubName: null });
-		expect(() => makeClub(club)).toThrow('Club must have a name');
+	test('Must have an name', () => {
+		expect(() => makeClub({ ...fakeFields, clubName: null })).toThrow(
+			'Club must have a name'
+		);
+		expect(() => makeClub({ ...fakeFields, clubName: '' })).toThrow(
+			'Club must have a name'
+		);
+		expect(() => makeClub({ ...fakeFields, clubName: undefined })).toThrow(
+			'Club must have a name'
+		);
 	});
-	test('must have a TLA', () => {
-		const club = makeFakeClub({ clubTLA: null });
-		expect(() => makeClub(club)).toThrow('Club must have a TLA');
+	test('Must have a TLA', () => {
+		expect(() => makeClub({ ...fakeFields, clubTLA: null })).toThrow(
+			'Club must have a TLA'
+		);
 	});
-	test('must have a crest', () => {
-		const club = makeFakeClub({ clubCrestURL: null });
-		expect(() => makeClub(club)).toThrow('Club must have a crest');
+	test('Must have a valid TLA', () => {
+		expect(() => makeClub({ ...fakeFields, clubTLA: 'asdasdasd' })).toThrow(
+			'Club TLA must be 3 alphabetic characters'
+		);
+		expect(() => makeClub({ ...fakeFields, clubTLA: '123' })).toThrow(
+			'Club TLA must be 3 alphabetic characters'
+		);
+		expect(() => makeClub({ ...fakeFields, clubTLA: '1a3' })).toThrow(
+			'Club TLA must be 3 alphabetic characters'
+		);
 	});
-	test('auto generates a creation timestamp', () => {
-		const club = makeFakeClub({ cretedAt: null });
-		expect(() => makeClub(club)).not.toThrow();
-		const createdClub = makeClub(club);
-		expect(createdClub.getCreatedAt()).toBeDefined();
+	test('Must have a crest', () => {
+		expect(() => makeClub({ ...fakeFields, clubCrestURL: null })).toThrow(
+			'Club must have a crest'
+		);
 	});
-	test('auto generates an update timestamp', () => {
-		const club = makeFakeClub({ updatedAt: null });
-		expect(() => makeClub(club)).not.toThrow();
-		const createdClub = makeClub(club);
-		expect(createdClub.getUpdatedAt()).toBeDefined();
+	test('Autogenerates a creation timestamp', () => {
+		expect(makeClub(fakeFields).getCreatedAt()).toBeDefined();
+	});
+	test('Autogenerates an update timestamp', () => {
+		expect(makeClub(fakeFields).getUpdatedAt()).toBeDefined();
 	});
 });
