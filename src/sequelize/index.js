@@ -2,12 +2,12 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const makeClubRepo = require('./club');
 
-module.exports = function makeSequelizeDB({ connectionString, options }) {
-	const sequelize = new Sequelize(connectionString, options);
+module.exports = function makeSequelizeDB(...args) {
+	const sequelize = new Sequelize(...args);
 
 	const clubRepository = makeClubRepo({ DataTypes, sequelize });
 
-	sequelize.sync();
+	sequelize.sync({ force: true });
 	sequelize
 		.authenticate()
 		.then(() => {

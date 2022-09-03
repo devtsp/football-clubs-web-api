@@ -16,15 +16,15 @@ module.exports = function buildMakeClub({ Id }) {
 			throw new Error('Club must have a crest');
 		}
 		if (
-			/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/.test(
-				clubTLA
+			!/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/.test(
+				clubCrestURL
 			)
 		) {
 			throw new Error('Club crest has to be a valid URL');
 		}
 
 		const clubId = Id.generateId();
-		const timeStamp = new Date().toISOString();
+		const timeStamp = Date.now();
 
 		return Object.freeze({
 			getId: () => clubId,

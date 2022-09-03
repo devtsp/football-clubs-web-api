@@ -1,14 +1,14 @@
-const makeClub = require('./index');
+const makeClub = require('../index');
 
 const fakeFields = {
 	clubName: 'valid',
 	clubTLA: 'TLA',
-	clubCrestURL: 'http://crest.com/1',
+	clubCrestURL: 'http://crest.com/',
 };
 
 describe('Club', () => {
 	test('Autogenerates an Id', () => {
-		expect(() => makeClub(fakeFields).getId()).toBeDefined();
+		expect(makeClub(fakeFields).getId()).toBeDefined();
 	});
 	test('Must have an name', () => {
 		expect(() => makeClub({ ...fakeFields, clubName: null })).toThrow(
@@ -47,5 +47,19 @@ describe('Club', () => {
 	});
 	test('Autogenerates an update timestamp', () => {
 		expect(makeClub(fakeFields).getUpdatedAt()).toBeDefined();
+	});
+	test('Must have a valid name', () => {
+		expect(() => makeClub({ ...fakeFields, clubName: '!"#' })).toThrow();
+	});
+	test('Must have a valid URL crest', () => {
+		expect(() =>
+			makeClub({ ...fakeFields, clubCrestURL: 'adsfknadslñas' })
+		).toThrow();
+	});
+	test('Return object must provide proper getter methods', () => {
+		expect(makeClub(fakeFields).getId()).toBeDefined();
+	});
+	test('Club entity throws when no fields passed at all', () => {
+		expect(() => makeClub()).toThrow();
 	});
 });

@@ -18,11 +18,11 @@ module.exports = function makeSequelizeClubsRepo({ DataTypes, sequelize }) {
 			allowNull: false,
 		},
 		createdAt: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.DATE,
 			allowNull: false,
 		},
 		updatedAt: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.DATE,
 			allowNull: false,
 		},
 	});

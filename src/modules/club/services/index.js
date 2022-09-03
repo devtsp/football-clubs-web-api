@@ -20,7 +20,9 @@ module.exports = function makeClubServices(clubsRepo) {
 			updatedAt: getUpdatedAt(),
 		};
 
-		return await clubsRepo.insert(created);
+		const result = await clubsRepo.insert(created);
+
+		return result;
 	}
 
 	async function findClubService(id) {

@@ -1,8 +1,9 @@
 // INIT DB
 const makeSequelizeDB = require('./sequelize');
 const { clubRepository } = makeSequelizeDB({
-	connectionString: 'sqlite::memory:',
-	options: { logging: false },
+	dialect: 'sqlite',
+	storage: 'db/sqlite.db',
+	logging: false,
 });
 
 // INIT CLUB MODULE
