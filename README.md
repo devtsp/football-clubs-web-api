@@ -9,6 +9,7 @@ If one layer needs to communicate to a higher one, it will be doing it by **[Dep
 The hierarchy presented occurs as follows:
 
 HIGHER LAYERS === can directly depend on ===> LOWER LAYERS
+
 LOWER LAYERS === can only depend via injection of ===> HIGER LAYERS
 
 Entity > Service > Controller > Web Interface (Express Framework) / DB Repository (Sequelize Framework)
