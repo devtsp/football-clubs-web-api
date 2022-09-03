@@ -48,10 +48,10 @@ module.exports = function makeClubControllers(clubService) {
 			return {
 				headers: {
 					'Content-Type': 'application/json',
-					'Last-Modified': new Date(posted.modifiedAt).toUTCString(),
+					'Last-Modified': new Date(posted.updatedAt).toUTCString(),
 				},
 				statusCode: 201,
-				body: { posted },
+				body: posted,
 			};
 		} catch (err) {
 			console.log(err);
