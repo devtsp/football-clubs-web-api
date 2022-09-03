@@ -1,10 +1,13 @@
 module.exports = function buildMakeClub({ Id }) {
 	return function makeClub({ clubName, clubTLA, clubCrestURL } = {}) {
+		if (!clubName && !clubTLA && !clubCrestURL) {
+			throw new Error('Missing required fields');
+		}
 		if (!clubName) {
 			throw new Error('Club must have a name');
 		}
 		if (/[^A-Za-z ']/.test(clubName)) {
-			throw new Error('Club Name invalid');
+			throw new Error('Invalid club name');
 		}
 		if (!clubTLA) {
 			throw new Error('Club must have a TLA');

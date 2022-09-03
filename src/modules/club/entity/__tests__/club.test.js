@@ -49,17 +49,19 @@ describe('Club', () => {
 		expect(makeClub(fakeFields).getUpdatedAt()).toBeDefined();
 	});
 	test('Must have a valid name', () => {
-		expect(() => makeClub({ ...fakeFields, clubName: '!"#' })).toThrow();
+		expect(() => makeClub({ ...fakeFields, clubName: '!"#' })).toThrow(
+			'Invalid club name'
+		);
 	});
 	test('Must have a valid URL crest', () => {
 		expect(() =>
 			makeClub({ ...fakeFields, clubCrestURL: 'adsfknadslñas' })
-		).toThrow();
+		).toThrow('Club crest has to be a valid URL');
 	});
 	test('Return object must provide proper getter methods', () => {
 		expect(makeClub(fakeFields).getId()).toBeDefined();
 	});
 	test('Club entity throws when no fields passed at all', () => {
-		expect(() => makeClub()).toThrow();
+		expect(() => makeClub()).toThrow('Missing required fields');
 	});
 });
