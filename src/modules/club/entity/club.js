@@ -1,13 +1,4 @@
 module.exports = function buildMakeClub({ Id }) {
-	/**
-	 * @param {Number} clubId
-	 * @param {String} clubName
-	 * @param {String} clubTLA
-	 * @param {String} clubCrestURL
-	 * @param {Number} createdAt
-	 * @param {Number} updatedAt
-	 * @returns {Object}
-	 */
 	return function makeClub({ clubName, clubTLA, clubCrestURL } = {}) {
 		if (!clubName) {
 			throw new Error('Club must have a name');

@@ -1,18 +1,19 @@
-const express = require('express');
+// INIT DB
+const makeSequelizeDB = require('./sequelize');
+const { clubRepository } = makeSequelizeDB({
+	connectionString: 'sqlite::memory:',
+	options: { logging: false },
+});
 
-const expressCallback = require('./express-callback');
-const { postClub, getClub, getAllClubs } = require('./modules/club/controller');
-const app = express();
+// INIT CLUB MODULE
+const initClubsModule = require('./modules/club');
+const clubControllers = initClubsModule(clubRepository);
 
-app.use(express.json());
+// APP
+const makeExpressApp = require('./express');
+const app = makeExpressApp({ clubControllers });
 
-// controllers (interface adapters = higher layer)
-// injected into -->
-// express interface (framework / drivers  = lower layer)
-app.get('/clubs/:id', expressCallback(getClub));
-app.get('/clubs', expressCallback(getAllClubs));
-app.post('/clubs', expressCallback(postClub));
-
+// SERVE APP
 app.listen(8080, () => {
 	console.log('>> Server is listening on port 8080');
 });
