@@ -9,6 +9,11 @@ module.exports = function makeClubsRepo(sequelizeModel) {
 		return found;
 	}
 
+	async function selectByName(clubName) {
+		const found = sequelizeModel.findOne({ where: { clubName } });
+		return found;
+	}
+
 	async function selectAll() {
 		const found = sequelizeModel.findAll();
 		return found;
@@ -18,5 +23,6 @@ module.exports = function makeClubsRepo(sequelizeModel) {
 		insert,
 		selectAll,
 		selectById,
+		selectByName,
 	});
 };

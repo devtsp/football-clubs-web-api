@@ -11,6 +11,7 @@ module.exports = function makePostClub(addClub) {
 				body: { posted },
 			};
 		} catch (err) {
+			console.log(err);
 			return {
 				headers: {
 					'Content-Type': 'application/json',

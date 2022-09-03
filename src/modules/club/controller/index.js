@@ -1,8 +1,11 @@
 const { addClub, findClub, listClubs } = require('../service');
-const makePostClub = require('./post-club');
-const makeGetClub = require('./get-club');
-const makeGetAllClubs = require('./get-clubs');
+const makePostClub = require('./post-club.controller');
+const makeGetClub = require('./get-club.controller');
+const makeGetAllClubs = require('./get-clubs.controller');
 
+// services (app business rules = higher layer)
+// injected into -->
+// controllers (interface adapters = lower layer)
 const postClub = makePostClub(addClub);
 const getClub = makeGetClub(findClub);
 const getAllClubs = makeGetAllClubs(listClubs);

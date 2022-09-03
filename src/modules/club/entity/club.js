@@ -4,15 +4,15 @@ module.exports = function buildMakeClub({ Id }) {
 	 * @param {String} clubName
 	 * @param {String} clubTLA
 	 * @param {String} clubCrestURL
-	 * @param {String} createdAt
-	 * @param {String} updatedAt
+	 * @param {Number} createdAt
+	 * @param {Number} updatedAt
 	 * @returns {Object}
 	 */
 	return function makeClub({ clubName, clubTLA, clubCrestURL } = {}) {
 		if (!clubName) {
 			throw new Error('Club must have a name');
 		}
-		if (/[\d\W]/.test(clubName)) {
+		if (/[^A-Za-z ']/.test(clubName)) {
 			throw new Error('Club Name invalid');
 		}
 		if (!clubTLA) {
@@ -33,7 +33,7 @@ module.exports = function buildMakeClub({ Id }) {
 		}
 
 		const clubId = Id.generateId();
-		const timeStamp = Date.now();
+		const timeStamp = new Date().toISOString();
 
 		return Object.freeze({
 			getId: () => clubId,

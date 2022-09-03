@@ -4,7 +4,7 @@ module.exports = function makeGetClub(findClub) {
 			'Content-Type': 'application/json',
 		};
 		try {
-			const club = await findClub(httpRequest.body.id);
+			const club = await findClub(httpRequest.params.id);
 			return {
 				headers,
 				statusCode: club,
