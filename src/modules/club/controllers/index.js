@@ -7,7 +7,8 @@ module.exports = function makeClubControllers(clubService) {
 			const club = await clubService.findClubService(httpRequest.params.id);
 			return {
 				headers,
-				statusCode: club,
+				statusCode: 200,
+				body: club,
 			};
 		} catch (err) {
 			return {
@@ -32,6 +33,7 @@ module.exports = function makeClubControllers(clubService) {
 				body: clubs,
 			};
 		} catch (err) {
+			console.log(err);
 			return {
 				headers,
 				statusCode: 400,
@@ -44,26 +46,27 @@ module.exports = function makeClubControllers(clubService) {
 
 	async function postClubController(httpRequest) {
 		try {
-			const posted = await clubService.addClubService(httpRequest.body);
+			const posted = await clubService.addClubService(httpRequest?.body);
 			return {
 				headers: {
 					'Content-Type': 'application/json',
-					'Last-Modified': new Date(posted.updatedAt).toUTCString(),
+					'Last-Modified': new Date(posted?.updatedAt).toUTCString(),
 				},
 				statusCode: 201,
 				body: posted,
 			};
 		} catch (err) {
 			console.log(err);
-			return {
+			const errorResponse = {
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				statusCode: 400,
 				body: {
-					error: err.message,
+					error: err?.message,
 				},
 			};
+			return errorResponse;
 		}
 	}
 
