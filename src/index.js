@@ -1,6 +1,6 @@
 // INIT DB
 const makeSequelizeDB = require('./sequelize');
-const { clubRepository } = makeSequelizeDB({
+const { clubRepository } = await makeSequelizeDB({
 	dialect: 'sqlite',
 	storage: 'db/sqlite.db',
 	logging: false,

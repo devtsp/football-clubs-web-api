@@ -15,7 +15,7 @@ const mockReqBody = {
 const { getAllClubsController, getClubController, postClubController } =
 	makeClubControllers(mockService);
 
-describe('postClubController', () => {
+describe('controllers.postClubController()', () => {
 	const { addClubService } = mockService;
 	test('201 on service success', async () => {
 		const response = await postClubController({ body: mockReqBody });
@@ -42,7 +42,7 @@ describe('postClubController', () => {
 	});
 });
 
-describe('getClubController', () => {
+describe('controllers.getClubController()', () => {
 	const { findClubService } = mockService;
 	test('200 on service success', async () => {
 		findClubService.mockImplementationOnce(id => id);
@@ -71,7 +71,7 @@ describe('getClubController', () => {
 	});
 });
 
-describe('getAllClubsController', () => {
+describe('controllers.getAllClubsController()', () => {
 	const { listClubsService } = mockService;
 	test('200 on service success', async () => {
 		listClubsService.mockResolvedValueOnce('[mock clubs list]');

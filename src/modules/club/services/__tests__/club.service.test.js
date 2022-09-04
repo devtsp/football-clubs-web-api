@@ -16,7 +16,7 @@ const mockFieldsTemplate = {
 	clubCrestURL: 'http://asdasd.com',
 };
 
-describe('>> services.findClubService()', () => {
+describe('services.findClubService()', () => {
 	test('calls repository.insert() ', async () => {
 		await listClubsService();
 
@@ -24,7 +24,7 @@ describe('>> services.findClubService()', () => {
 	});
 });
 
-describe('>> services.addClubsService', () => {
+describe('services.addClubsService()', () => {
 	test('calls repository.selectByName() and repository.insert()', async () => {
 		await addClubService(mockFieldsTemplate);
 
@@ -33,7 +33,7 @@ describe('>> services.addClubsService', () => {
 	});
 });
 
-describe('>> services.findClubService()', () => {
+describe('services.findClubService()', () => {
 	test('calls repository.selectById() ', async () => {
 		await findClubService('foo');
 
