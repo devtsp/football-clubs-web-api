@@ -1,9 +1,9 @@
-const makeClubControllers = require('../index');
+const ClubController = require('../index');
 
-const mockService = {
-	findClubService: jest.fn(async id => {}),
-	listClubsService: jest.fn(async () => []),
-	addClubService: jest.fn(async clubBody => clubBody),
+const clubServiceMock = {
+	findById: jest.fn(async id => {}),
+	index: jest.fn(async () => []),
+	add: jest.fn(async clubBody => clubBody),
 };
 
 const mockReqBody = {
@@ -12,75 +12,69 @@ const mockReqBody = {
 	clubCrestURL: 'http://asdasd.com',
 };
 
-const { getAllClubsController, getClubController, postClubController } =
-	makeClubControllers(mockService);
+const clubController = new ClubController(clubServiceMock);
 
-describe('controllers.postClubController()', () => {
-	const { addClubService } = mockService;
+describe('clubController.post()', () => {
 	test('201 on service success', async () => {
-		const response = await postClubController({ body: mockReqBody });
+		const response = await clubController.post({ body: mockReqBody });
 
-		expect(addClubService).toHaveBeenCalledWith(mockReqBody);
+		expect(clubServiceMock.add).toHaveBeenCalledWith(mockReqBody);
 		expect(response.headers['Content-Type']).toEqual('application/json');
 		expect(response.statusCode).toBe(201);
 		expect(response.body).toEqual(mockReqBody);
 	});
 	test('400 on service error', async () => {
 		let response;
-		addClubService.mockRejectedValueOnce(new Error());
+		clubServiceMock.add.mockRejectedValueOnce(new Error());
 
 		try {
-			response = await postClubController();
+			response = await clubController.post();
 		} catch (err) {
 			response = err;
 		}
 
-		expect(addClubService).toHaveBeenCalledWith(mockReqBody);
+		expect(clubServiceMock.add).toHaveBeenCalledWith(mockReqBody);
 		expect(response.headers['Content-Type']).toEqual('application/json');
 		expect(response.statusCode).toBe(400);
 		expect(response.body.error).toBeDefined();
 	});
 });
 
-describe('controllers.getClubController()', () => {
-	const { findClubService } = mockService;
-
+describe('clubController.getById()', () => {
 	test('200 on service success', async () => {
-		findClubService.mockImplementationOnce(id => id);
+		clubServiceMock.findById.mockImplementationOnce(id => id);
 
-		const response = await getClubController({ params: { id: '1' } });
+		const response = await clubController.getById({ params: { id: '1' } });
 
-		expect(findClubService).toHaveBeenCalledWith('1');
+		expect(clubServiceMock.findById).toHaveBeenCalledWith('1');
 		expect(response.headers['Content-Type']).toEqual('application/json');
 		expect(response.statusCode).toBe(200);
 		expect(response.body).toEqual('1');
 	});
 	test('400 on service error', async () => {
 		let response;
-		findClubService.mockRejectedValueOnce(new Error());
+		clubServiceMock.findById.mockRejectedValueOnce(new Error());
 
 		try {
-			response = await getClubController({ params: { id: '1' } });
+			response = await clubController.getById({ params: { id: '1' } });
 		} catch (err) {
 			response = err;
 		}
 
-		expect(findClubService).toHaveBeenCalled();
+		expect(clubServiceMock.findById).toHaveBeenCalled();
 		expect(response.headers['Content-Type']).toEqual('application/json');
 		expect(response.statusCode).toBe(400);
 		expect(response.body.error).toBeDefined();
 	});
 });
 
-describe('controllers.getAllClubsController()', () => {
-	const { listClubsService } = mockService;
-
+describe('clubController.getAll()', () => {
 	test('200 on service success', async () => {
-		listClubsService.mockResolvedValueOnce('[mock clubs list]');
+		clubServiceMock.index.mockResolvedValueOnce('[mock clubs list]');
 
-		const response = await getAllClubsController();
+		const response = await clubController.getAll();
 
-		expect(listClubsService).toHaveBeenCalled();
+		expect(clubServiceMock.index).toHaveBeenCalled();
 		expect(response.headers['Content-Type']).toEqual('application/json');
 		expect(response.statusCode).toBe(200);
 		expect(response.body).toEqual('[mock clubs list]');
@@ -88,15 +82,15 @@ describe('controllers.getAllClubsController()', () => {
 
 	test('400 on service error', async () => {
 		let response;
-		listClubsService.mockRejectedValueOnce(new Error());
+		clubServiceMock.index.mockRejectedValueOnce(new Error());
 
 		try {
-			response = await getAllClubsController();
+			response = await clubController.getAll();
 		} catch (err) {
 			response = err;
 		}
 
-		expect(listClubsService).toHaveBeenCalled();
+		expect(clubServiceMock.index).toHaveBeenCalled();
 		expect(response.headers['Content-Type']).toEqual('application/json');
 		expect(response.statusCode).toBe(400);
 		expect(response.body.error).toBeDefined();

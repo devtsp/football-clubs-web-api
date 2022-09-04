@@ -5,14 +5,18 @@ const {
 	ClubIdUndefinedError,
 } = require('./errors');
 
-module.exports = function makeClubServices(clubsRepo) {
-	async function addClubService({ clubName, clubTLA, clubCrestURL } = {}) {
+module.exports = class ClubService {
+	constructor(clubRepo) {
+		this.clubRepo = clubRepo;
+	}
+
+	add = async ({ clubName, clubTLA, clubCrestURL } = {}) => {
 		if (!clubName || !clubTLA || !clubCrestURL) {
 			throw new ClubMissingRequiredFieldsError(
 				'Missing required club fields to add club'
 			);
 		}
-		const exists = await clubsRepo.selectByName(clubName);
+		const exists = await this.clubRepo.selectByName(clubName);
 
 		if (exists) {
 			throw new ClubAlreadyExistsError('Club with that name already exists');
@@ -30,23 +34,21 @@ module.exports = function makeClubServices(clubsRepo) {
 			updatedAt: getUpdatedAt(),
 		};
 
-		const result = await clubsRepo.insert(created);
+		const result = await this.clubRepo.insert(created);
 
 		return result;
-	}
+	};
 
-	async function findClubService(id) {
+	findById = async id => {
 		if (!id) {
 			throw new ClubIdUndefinedError('Missing required club ID to search club');
 		}
-		const result = await clubsRepo.selectById(id);
+		const result = await this.clubRepo.selectById(id);
 		return result;
-	}
+	};
 
-	async function listClubsService() {
-		const result = await clubsRepo.selectAll();
+	index = async () => {
+		const result = await this.clubRepo.selectAll();
 		return result;
-	}
-
-	return Object.freeze({ addClubService, findClubService, listClubsService });
+	};
 };

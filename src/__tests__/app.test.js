@@ -1,9 +1,8 @@
 const request = require('supertest');
 
-const initClubsModule = require('../modules/club');
 const makeExpressApp = require('../express');
-
-const db = [];
+const ClubController = require('../modules/club/controller');
+const ClubService = require('../modules/club/service');
 
 const mockClub = {
 	clubName: 'Hello World',
@@ -11,7 +10,8 @@ const mockClub = {
 	clubCrestURL: 'http://asdasd.com',
 };
 
-const clubMockRepository = {
+let db = [];
+const clubRepoMock = {
 	insert: jest.fn(body => {
 		db.push(body);
 		return db.find(({ clubName }) => clubName == body.clubName);
@@ -21,23 +21,25 @@ const clubMockRepository = {
 	selectByName: jest.fn(name => db.find(({ clubName }) => clubName == name)),
 };
 
-const clubControllers = initClubsModule(clubMockRepository);
-const app = makeExpressApp({ clubControllers });
-const server = app.listen(5500);
+// BUILD CLUB CONTROLLER WITH MOCKED REPO
+const clubService = new ClubService(clubRepoMock);
+const clubController = new ClubController(clubService);
+
+// APP
+const app = makeExpressApp({ clubController });
 
 describe('GET /clubs', () => {
-	test('empty array when no entries in db', async () => {
-		const { body } = await request(app).get('/clubs');
+	test('returns empty array when no entries in db', async () => {
+		const response = await request(app).get('/clubs');
 
-		expect(body).toEqual([]);
+		expect(response.body).toEqual([]);
 	});
 
-	test('array of clubs when entries in db', async () => {
+	test('returns array of clubs when entries in db', async () => {
 		db.push({ ...mockClub });
-		const { body } = await request(app).get('/clubs');
 
-		expect(body.length).toBe(1);
+		const response = await request(app).get('/clubs');
+
+		expect(response.body.length).toBe(1);
 	});
 });
-
-server.close();

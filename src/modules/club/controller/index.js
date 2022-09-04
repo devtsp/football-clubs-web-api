@@ -1,10 +1,14 @@
-module.exports = function makeClubControllers(clubService) {
-	async function getClubController(httpRequest) {
+module.exports = class ClubController {
+	constructor(clubService) {
+		this.clubService = clubService;
+	}
+
+	getById = async httpRequest => {
 		const headers = {
 			'Content-Type': 'application/json',
 		};
 		try {
-			const club = await clubService.findClubService(httpRequest.params.id);
+			const club = await this.clubService.findById(httpRequest.params.id);
 			return {
 				headers,
 				statusCode: 200,
@@ -19,21 +23,20 @@ module.exports = function makeClubControllers(clubService) {
 				},
 			};
 		}
-	}
+	};
 
-	async function getAllClubsController(httpRequest) {
+	getAll = async httpRequest => {
 		const headers = {
 			'Content-Type': 'application/json',
 		};
 		try {
-			const clubs = await clubService.listClubsService();
+			const clubs = await this.clubService.index();
 			return {
 				headers,
 				statusCode: 200,
 				body: clubs,
 			};
 		} catch (err) {
-			console.log(err);
 			return {
 				headers,
 				statusCode: 400,
@@ -42,11 +45,11 @@ module.exports = function makeClubControllers(clubService) {
 				},
 			};
 		}
-	}
+	};
 
-	async function postClubController(httpRequest) {
+	post = async httpRequest => {
 		try {
-			const posted = await clubService.addClubService(httpRequest?.body);
+			const posted = await this.clubService.add(httpRequest?.body);
 			return {
 				headers: {
 					'Content-Type': 'application/json',
@@ -56,8 +59,7 @@ module.exports = function makeClubControllers(clubService) {
 				body: posted,
 			};
 		} catch (err) {
-			console.log(err);
-			const errorResponse = {
+			return {
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -66,13 +68,6 @@ module.exports = function makeClubControllers(clubService) {
 					error: err?.message,
 				},
 			};
-			return errorResponse;
 		}
-	}
-
-	return Object.freeze({
-		postClubController,
-		getClubController,
-		getAllClubsController,
-	});
+	};
 };

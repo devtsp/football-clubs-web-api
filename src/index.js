@@ -1,20 +1,23 @@
-// INIT DB
 const makeSequelizeDB = require('./sequelize');
-const { clubRepository } = await makeSequelizeDB({
+const makeExpressApp = require('./express');
+const ClubService = require('./modules/club/service');
+const ClubController = require('./modules/club/controller');
+
+// INIT DB
+makeSequelizeDB({
 	dialect: 'sqlite',
 	storage: 'db/sqlite.db',
 	logging: false,
-});
+}).then(repos => {
+	// BUILD CLUB CONTROLLER
+	const clubService = new ClubService(repos.clubRepository);
+	const clubController = new ClubController(clubService);
 
-// INIT CLUB MODULE
-const initClubsModule = require('./modules/club');
-const clubControllers = initClubsModule(clubRepository);
+	// APP
+	const app = makeExpressApp({ clubController });
 
-// APP
-const makeExpressApp = require('./express');
-const app = makeExpressApp({ clubControllers });
-
-// SERVE APP
-app.listen(8080, () => {
-	console.log('>> Server is listening on port 8080');
+	// SERVE APP
+	app.listen(8080, () => {
+		console.log('>> Server is listening on port 8080');
+	});
 });

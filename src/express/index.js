@@ -2,11 +2,11 @@ const express = require('express');
 
 const expressCallback = require('./express-callback');
 
-module.exports = function makeExpressApp({ clubControllers }) {
+module.exports = function makeExpressApp({ clubController }) {
 	const app = express();
 	app.use(express.json());
-	app.get('/clubs/:id', expressCallback(clubControllers.getClubController));
-	app.get('/clubs', expressCallback(clubControllers.getAllClubsController));
-	app.post('/clubs', expressCallback(clubControllers.postClubController));
+	app.get('/clubs/:id', expressCallback(clubController.getById));
+	app.get('/clubs', expressCallback(clubController.getAll));
+	app.post('/clubs', expressCallback(clubController.post));
 	return app;
 };
