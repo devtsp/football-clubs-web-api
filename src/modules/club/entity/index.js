@@ -1,7 +1,6 @@
-const buildMakeClub = require('./Club');
+const buildClubClass = require('./build-club');
 const Id = require('../../../helpers/generate-id.helper');
 
-// call entity creator builder passing injected deps
-const makeClub = buildMakeClub({ Id });
+const Club = buildClubClass({ Id });
 
-module.exports = makeClub;
+module.exports = Club;

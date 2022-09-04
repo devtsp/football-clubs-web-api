@@ -1,4 +1,4 @@
-const makeClub = require('../entity');
+const Club = require('../entity');
 const {
 	ClubAlreadyExistsError,
 	ClubMissingRequiredFieldsError,
@@ -17,26 +17,11 @@ module.exports = class ClubService {
 			);
 		}
 		const exists = await this.clubRepo.selectByName(clubName);
-
 		if (exists) {
 			throw new ClubAlreadyExistsError('Club with that name already exists');
 		}
-
-		const { getName, getTLA, getCrestURL, getId, getCreatedAt, getUpdatedAt } =
-			makeClub({ clubName, clubTLA, clubCrestURL });
-
-		const created = {
-			clubName: getName(),
-			clubTLA: getTLA(),
-			clubCrestURL: getCrestURL(),
-			clubId: getId(),
-			createdAt: getCreatedAt(),
-			updatedAt: getUpdatedAt(),
-		};
-
-		const result = await this.clubRepo.insert(created);
-
-		return result;
+		const club = new Club({ clubName, clubTLA, clubCrestURL });
+		return await this.clubRepo.insert(club);
 	};
 
 	findById = async id => {

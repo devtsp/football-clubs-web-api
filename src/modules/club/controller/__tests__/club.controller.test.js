@@ -23,6 +23,7 @@ describe('clubController.post()', () => {
 		expect(response.statusCode).toBe(201);
 		expect(response.body).toEqual(mockReqBody);
 	});
+
 	test('400 on service error', async () => {
 		let response;
 		clubServiceMock.add.mockRejectedValueOnce(new Error());
