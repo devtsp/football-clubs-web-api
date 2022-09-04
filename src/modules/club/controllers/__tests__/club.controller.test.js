@@ -44,6 +44,7 @@ describe('controllers.postClubController()', () => {
 
 describe('controllers.getClubController()', () => {
 	const { findClubService } = mockService;
+
 	test('200 on service success', async () => {
 		findClubService.mockImplementationOnce(id => id);
 
@@ -73,6 +74,7 @@ describe('controllers.getClubController()', () => {
 
 describe('controllers.getAllClubsController()', () => {
 	const { listClubsService } = mockService;
+
 	test('200 on service success', async () => {
 		listClubsService.mockResolvedValueOnce('[mock clubs list]');
 
@@ -83,6 +85,7 @@ describe('controllers.getAllClubsController()', () => {
 		expect(response.statusCode).toBe(200);
 		expect(response.body).toEqual('[mock clubs list]');
 	});
+
 	test('400 on service error', async () => {
 		let response;
 		listClubsService.mockRejectedValueOnce(new Error());

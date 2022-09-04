@@ -1,15 +1,25 @@
 const makeClub = require('../entity');
+const {
+	ClubAlreadyExistsError,
+	ClubMissingRequiredFieldsError,
+	ClubIdUndefinedError,
+} = require('./errors');
 
 module.exports = function makeClubServices(clubsRepo) {
-	async function addClubService(clubInfo) {
-		const exists = await clubsRepo.selectByName(clubInfo?.clubName);
+	async function addClubService({ clubName, clubTLA, clubCrestURL } = {}) {
+		if (!clubName || !clubTLA || !clubCrestURL) {
+			throw new ClubMissingRequiredFieldsError(
+				'Missing required club fields to add club'
+			);
+		}
+		const exists = await clubsRepo.selectByName(clubName);
 
 		if (exists) {
-			throw new Error('Club with that name already exists');
+			throw new ClubAlreadyExistsError('Club with that name already exists');
 		}
 
 		const { getName, getTLA, getCrestURL, getId, getCreatedAt, getUpdatedAt } =
-			makeClub(clubInfo);
+			makeClub({ clubName, clubTLA, clubCrestURL });
 
 		const created = {
 			clubName: getName(),
@@ -26,6 +36,9 @@ module.exports = function makeClubServices(clubsRepo) {
 	}
 
 	async function findClubService(id) {
+		if (!id) {
+			throw new ClubIdUndefinedError('Missing required club ID to search club');
+		}
 		const result = await clubsRepo.selectById(id);
 		return result;
 	}
