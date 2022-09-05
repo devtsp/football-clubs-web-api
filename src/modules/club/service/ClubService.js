@@ -1,4 +1,4 @@
-const Club = require('../entity');
+const Club = require('../entity/Club');
 const {
 	ClubAlreadyExistsError,
 	ClubMissingRequiredFieldsError,

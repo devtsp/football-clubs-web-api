@@ -1,4 +1,4 @@
-const ClubController = require('../index');
+const ClubController = require('../ClubController');
 
 const clubServiceMock = {
 	findById: jest.fn(async id => {}),

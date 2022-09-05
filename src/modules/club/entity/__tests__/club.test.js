@@ -1,4 +1,4 @@
-const Club = require('../index');
+const Club = require('../Club');
 
 const fakeFields = {
 	clubName: 'valid',

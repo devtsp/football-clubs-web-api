@@ -1,8 +1,8 @@
 const request = require('supertest');
 
 const makeExpressApp = require('../express');
-const ClubController = require('../modules/club/controller');
-const ClubService = require('../modules/club/service');
+const ClubController = require('../modules/club/controller/ClubController');
+const ClubService = require('../modules/club/service/ClubService');
 
 const mockClub = {
 	clubName: 'Hello World',

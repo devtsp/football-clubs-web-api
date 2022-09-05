@@ -1,7 +1,7 @@
 const makeSequelizeDB = require('./sequelize');
 const makeExpressApp = require('./express');
-const ClubService = require('./modules/club/service');
-const ClubController = require('./modules/club/controller');
+const ClubService = require('./modules/club/service/ClubService');
+const ClubController = require('./modules/club/controller/ClubController');
 
 // INIT DB
 makeSequelizeDB({

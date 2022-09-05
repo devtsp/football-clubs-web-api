@@ -1,4 +1,4 @@
-const ClubService = require('../index');
+const ClubService = require('../ClubService');
 const {
 	ClubAlreadyExistsError,
 	ClubMissingRequiredFieldsError,
