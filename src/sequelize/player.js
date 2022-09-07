@@ -31,8 +31,8 @@ module.exports = function makeSequelizeClubsRepo({ DataTypes, sequelize }) {
 		},
 	});
 
-	async function insert(clubInstance) {
-		const result = await Player.create(clubInstance);
+	async function insert(playerInstance) {
+		const result = await Player.create(playerInstance);
 		return result;
 	}
 
