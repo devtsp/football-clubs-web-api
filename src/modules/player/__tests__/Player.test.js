@@ -1,78 +1,71 @@
-const Club = require('../Player');
+const Player = require('../entity/Player');
 
 const fakeFields = {
-	playerFirstName: 'valid name',
-	playerLastName: 'valid lastname',
+	playerFirstName: 'Connor',
+	playerLastName: 'McGregor',
 	palyerAge: 28,
 	playerPosition: 9,
 };
 
-describe('>> Club', () => {
+describe('>> Player', () => {
+	test('Throws on totally empty/nullish fields', () => {
+		expect(() => new Player({})).toThrow('Missing some required fields');
+		expect(() => new Player(null)).toThrow(
+			'Must provide a valid object to initialize entity'
+		);
+		expect(() => new Player(undefined)).toThrow(
+			'Must provide a valid object to initialize entity'
+		);
+		expect(() => new Player([])).toThrow(
+			'Must provide a valid object to initialize entity'
+		);
+		expect(() => new Player(123)).toThrow(
+			'Must provide a valid object to initialize entity'
+		);
+		expect(() => new Player('')).toThrow(
+			'Must provide a valid object to initialize entity'
+		);
+	});
+
 	test('Autogenerates an Id', () => {
-		expect(new Club(fakeFields).getId()).toBeDefined();
+		expect(new Player(fakeFields).getId()).toBeDefined();
 	});
 
-	test('Must have an name', () => {
-		expect(() => new Club({ ...fakeFields, clubName: null })).toThrow(
-			'Club must have a name'
+	test('firstname and lastname must be of type "string"', () => {
+		expect(() => new Player({ ...fakeFields, playerFirstName: null })).toThrow(
+			'Player firstname and lastname must be of type: string'
 		);
-		expect(() => new Club({ ...fakeFields, clubName: '' })).toThrow(
-			'Club must have a name'
-		);
-		expect(() => new Club({ ...fakeFields, clubName: undefined })).toThrow(
-			'Club must have a name'
-		);
-	});
-
-	test('Must have a TLA', () => {
-		expect(() => new Club({ ...fakeFields, clubTLA: null })).toThrow(
-			'Club must have a TLA'
-		);
-	});
-
-	test('Must have a valid TLA', () => {
-		expect(() => new Club({ ...fakeFields, clubTLA: 'asdasdasd' })).toThrow(
-			'Club TLA must be 3 alphabetic characters'
-		);
-		expect(() => new Club({ ...fakeFields, clubTLA: '123' })).toThrow(
-			'Club TLA must be 3 alphabetic characters'
-		);
-		expect(() => new Club({ ...fakeFields, clubTLA: '1a3' })).toThrow(
-			'Club TLA must be 3 alphabetic characters'
-		);
-	});
-
-	test('Must have a crest', () => {
-		expect(() => new Club({ ...fakeFields, clubCrestURL: null })).toThrow(
-			'Club must have a crest'
-		);
-	});
-
-	test('Autogenerates a creation timestamp', () => {
-		expect(new Club(fakeFields).getCreatedAt()).toBeDefined();
-	});
-
-	test('Autogenerates an update timestamp', () => {
-		expect(new Club(fakeFields).getUpdatedAt()).toBeDefined();
-	});
-
-	test('Must have a valid name', () => {
-		expect(() => new Club({ ...fakeFields, clubName: '!"#' })).toThrow(
-			'Invalid club name'
-		);
-	});
-
-	test('Must have a valid URL crest', () => {
 		expect(
-			() => new Club({ ...fakeFields, clubCrestURL: 'adsfknadslñas' })
-		).toThrow('Club crest has to be a valid URL');
-	});
+			() => new Player({ ...fakeFields, playerFirstName: undefined })
+		).toThrow('Player firstname and lastname must be of type: string');
+		expect(() => new Player({ ...fakeFields, playerFirstName: 123 })).toThrow(
+			'Player firstname and lastname must be of type: string'
+		);
 
-	test('Return object must provide proper getter methods', () => {
-		expect(new Club(fakeFields).getId()).toBeDefined();
+		expect(() => new Player({ ...fakeFields, playerLastName: null })).toThrow(
+			'Player firstname and lastname must be of type: string'
+		);
+		expect(
+			() => new Player({ ...fakeFields, playerLastName: undefined })
+		).toThrow('Player firstname and lastname must be of type: string');
+		expect(() => new Player({ ...fakeFields, playerLastName: 123 })).toThrow(
+			'Player firstname and lastname must be of type: string'
+		);
 	});
-
-	test('Club entity throws when no fields passed at all', () => {
-		expect(() => new Club()).toThrow('Missing required fields');
+	test('Must have a first name and lastname (no empty strings)', () => {
+		expect(() => new Player({ ...fakeFields, playerFirstName: '' })).toThrow(
+			'Player must have firstname and lastname'
+		);
+		expect(() => new Player({ ...fakeFields, playerLastName: '' })).toThrow(
+			'Player must have firstname and lastname'
+		);
+	});
+	test('Must have a valid first name and lastname (only alphabetic chars)', () => {
+		expect(() => new Player({ ...fakeFields, playerFirstName: '123' })).toThrow(
+			'Invalid firstname'
+		);
+		expect(
+			() => new Player({ ...fakeFields, playerLastName: '23523' })
+		).toThrow('Invalid lastname');
 	});
 });

@@ -1,26 +1,34 @@
 const IdService = require('../../../helpers/generate-id.helper');
 
 module.exports = class Player {
-	constructor({
-		playerFirstName,
-		playerLastName,
-		playerAge,
-		playerPosition,
-		clubId = null,
-	} = {}) {
-		if (!playerFirstName && !playerLastName && !playerAge && !playerPosition) {
-			throw new Error('Missing required fields');
-		}
-		if (
-			!typeof playerFirstName == 'string' ||
-			!typeof playerLastName == 'string'
-		) {
-			throw new TypeError(
-				'Player firstname and lastname must be of type: string'
-			);
+	constructor(playerFieldsRecieved) {
+		const playerProps = [
+			'playerFirstName',
+			'playerLastName',
+			'playerAge',
+			'playerPosition',
+		];
+
+		if (typeof playerFieldsRecieved.constructor.name !== 'Object') {
+			throw new Error('Must provide a valid object to initialize entity');
 		}
 
-		if (!playerFirstName.trim() || !playerLastName.trim()) {
+		const validFields = Object.keys(playerFieldsRecieved).map(fieldRecieved =>
+			playerProps.includes(fieldRecieved)
+		);
+
+		if (!validFields.length) {
+			throw new Error('No valid property was found to start player creation');
+		}
+
+		if (
+			!(typeof playerFirstName == 'string') ||
+			!(typeof playerLastName == 'string')
+		) {
+			throw new Error('Player firstname and lastname must be of type: string');
+		}
+
+		if (!playerFirstName || !playerLastName) {
 			throw new Error('Player must have firstname and lastname');
 		}
 		if (/[^A-Za-z]/.test(playerFirstName)) {
