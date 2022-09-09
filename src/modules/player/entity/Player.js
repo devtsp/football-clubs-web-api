@@ -12,8 +12,8 @@ module.exports = class Player {
 
     // recieve object
     if (
-      typeof playerFieldsRecieved == 'undefined' ||
-      playerFieldsRecieved?.constructor?.name != 'Object'
+      typeof playerData == 'undefined' ||
+      playerData?.constructor?.name != 'Object'
     ) {
       throw new Error('Must provide a valid object to initialize entity');
     }
