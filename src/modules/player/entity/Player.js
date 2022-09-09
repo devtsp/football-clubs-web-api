@@ -80,7 +80,7 @@ module.exports = class Player {
   getLastName = () => this.playerLastName;
   getAge = () => this.playerAge;
   getPosition = () => this.playerPosition;
-  getPClubId = () => this.clubId;
+  getClubId = () => this.clubId;
   getCreatedAt = () => this.timeStamp;
   getUpdatedAt = () => this.timeStamp;
 };

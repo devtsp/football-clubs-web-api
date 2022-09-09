@@ -5,6 +5,7 @@ const fakeFields = {
   playerLastName: 'McGregor',
   playerAge: 28,
   playerPosition: 9,
+  clubId: 89,
 };
 
 describe('>> Player', () => {
@@ -38,10 +39,6 @@ describe('>> Player', () => {
     expect(
       () => new Player({ someRandomProp: false, anotherNotRequiredProp: [] })
     ).toThrow('No valid property was found to start player creation');
-  });
-
-  test('Autogenerates an Id', () => {
-    expect(new Player(fakeFields).getId()).toBeDefined();
   });
 
   test('firstname and lastname must be of type "string"', () => {
@@ -87,5 +84,17 @@ describe('>> Player', () => {
     expect(
       () => new Player({ ...fakeFields, playerLastName: '23523' })
     ).toThrow('Invalid lastname');
+  });
+
+  // HAPPY PATHS
+  test('returns entity instance on valid fields', () => {
+    const player = new Player(fakeFields);
+    expect(player.getAge()).toBe(fakeFields.playerAge);
+    expect(player.getPosition()).toBe(fakeFields.playerPosition);
+    expect(player.getFirstName()).toBe(fakeFields.playerFirstName);
+    expect(player.getLastName()).toBe(fakeFields.playerLastName);
+    expect(player.getClubId()).toEqual(fakeFields.clubId);
+    expect(player.getUpdatedAt()).toBeDefined();
+    expect(player.getCreatedAt()).toBeDefined();
   });
 });
