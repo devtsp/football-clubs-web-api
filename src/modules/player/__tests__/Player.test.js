@@ -86,14 +86,15 @@ describe('>> Player', () => {
     ).toThrow('Invalid lastname');
   });
 
-  // HAPPY PATHS
-  test('returns entity instance on valid fields', () => {
+  // HAPPY
+  test('Returns valid entity instance if valid data passed (autogenerate id and timestamps)', () => {
     const player = new Player(fakeFields);
     expect(player.getAge()).toBe(fakeFields.playerAge);
     expect(player.getPosition()).toBe(fakeFields.playerPosition);
     expect(player.getFirstName()).toBe(fakeFields.playerFirstName);
     expect(player.getLastName()).toBe(fakeFields.playerLastName);
     expect(player.getClubId()).toEqual(fakeFields.clubId);
+    expect(player.getId()).toBeDefined();
     expect(player.getUpdatedAt()).toBeDefined();
     expect(player.getCreatedAt()).toBeDefined();
   });

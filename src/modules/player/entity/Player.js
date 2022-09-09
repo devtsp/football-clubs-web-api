@@ -1,15 +1,16 @@
 const IdService = require('../../../helpers/generate-id.helper');
 
 module.exports = class Player {
-  constructor(playerFieldsRecieved) {
-    const playerProps = [
+  constructor(playerData) {
+    // expected keys in incoming data
+    const expectedKeys = [
       'playerFirstName',
       'playerLastName',
       'playerAge',
       'playerPosition',
     ];
 
-    // TO RECIEVE: OBJECT
+    // recieve object
     if (
       typeof playerFieldsRecieved == 'undefined' ||
       playerFieldsRecieved?.constructor?.name != 'Object'
@@ -17,12 +18,10 @@ module.exports = class Player {
       throw new Error('Must provide a valid object to initialize entity');
     }
 
-    const validFields = Object.keys(playerFieldsRecieved).filter(
-      (fieldRecieved) => playerProps.includes(fieldRecieved)
-    );
-
-    // RECIEVED HAS AT LEAST ONE VALID PROP
-    if (!validFields.length) {
+    // at least one valid prop
+    const incomingKeys = Object.keys(playerData);
+    const validKeys = incomingKeys.filter((key) => expectedKeys.includes(key));
+    if (!validKeys.length) {
       throw new Error('No valid property was found to start player creation');
     }
 
@@ -32,9 +31,9 @@ module.exports = class Player {
       playerAge,
       playerPosition,
       clubId,
-    } = playerFieldsRecieved;
+    } = playerData;
 
-    // NAME AND LASTNAME: STRING NOT EMPTY
+    // name and lastname strings
     if (
       typeof playerFirstName != 'string' ||
       typeof playerLastName != 'string'
@@ -45,7 +44,12 @@ module.exports = class Player {
       throw new Error('Player must have firstname and lastname');
     }
 
-    // NAME AND LASTNAME: VALID
+    // age and position numbers
+    if (typeof playerAge != 'number' || typeof playerPosition != 'number') {
+      throw new Error('Player age and position must be of type: number');
+    }
+
+    // name and lastname valid
     if (/[^A-Za-z]/.test(playerFirstName)) {
       throw new Error('Invalid firstname');
     }
@@ -53,12 +57,7 @@ module.exports = class Player {
       throw new Error('Invalid lastname');
     }
 
-    // AGE AND POSITION: NUMBERS
-    if (typeof playerAge != 'number' || typeof playerPosition != 'number') {
-      throw new Error('Player age and position must be of type: number');
-    }
-
-    // AGE AND POSITION: VALID
+    // age and position vaid
     if (playerAge < 16 || playerAge > 45) {
       throw new Error('Player must be between 16 and 45 years old ');
     }
